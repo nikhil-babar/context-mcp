@@ -1,9 +1,19 @@
 // src/MyMcpServer.Api/Program.cs
+using ContextMcp.Api.Config;
+using ContextMcp.Api.Infrastructure;
+using ContextMcp.Api.Models;
 using ContextMcp.Api.Tools;
+using ContextMcp.Api.Utility;
+using ModelContextProtocol;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register application services
+KnowledgeBaseTypeScanner.RegisterFromAssembly(typeof(KnowledgeBaseContent).Assembly);
+
+var jsonSerializerOptions = new JsonSerializerOptions(McpJsonUtilities.DefaultOptions);
+jsonSerializerOptions.Converters.Add(new KnowledgeBaseContentJsonConverter());
+
 
 // Register MCP with SSE transport
 builder.Services
@@ -15,11 +25,18 @@ builder.Services
             Version = "1.0.0"
         };
     })
-    .WithHttpTransport()        // ← enables SSE over HTTP
-    .WithTools<CalculatorTool>();
-
+    .WithHttpTransport()
+    .WithTools<PostKnowledgeBaseTool>(jsonSerializerOptions);
+  
 builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
     p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+    
+builder.Services.Configure<ElasticSearchSettings>(
+    builder.Configuration.GetSection("Elasticsearch"));
+
+builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddServices(builder.Configuration);
 
 var app = builder.Build();
 

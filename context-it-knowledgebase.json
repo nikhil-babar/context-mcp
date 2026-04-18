@@ -1,0 +1,52 @@
+{
+  "index_patterns": ["knowledge-base*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 1,
+      "analysis": {
+        "analyzer": {
+          "text_analyzer": {
+            "type": "standard",
+            "stopwords": "_english_"
+          }
+        }
+      }
+    },
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        "id": {
+          "type": "keyword"
+        },
+        "type": {
+          "type": "keyword"
+        },
+        "title": {
+          "type": "text",
+          "analyzer": "text_analyzer",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "summary": {
+          "type": "text",
+          "analyzer": "text_analyzer"
+        },
+        "tags": {
+          "type": "keyword"
+        },
+        "importance": {
+          "type": "keyword"
+        },
+        "content": {
+          "enabled": false
+        }
+      }
+    }
+  },
+  "priority": 100
+}
