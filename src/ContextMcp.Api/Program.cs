@@ -2,6 +2,7 @@
 using ContextMcp.Api.Config;
 using ContextMcp.Api.Infrastructure;
 using ContextMcp.Api.Models;
+using ContextMcp.Api.Services.VoyageService;
 using ContextMcp.Api.Tools;
 using ContextMcp.Api.Utility;
 using ModelContextProtocol;
@@ -31,10 +32,9 @@ builder.Services
 builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
     p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
     
-builder.Services.Configure<ElasticSearchSettings>(
-    builder.Configuration.GetSection("Elasticsearch"));
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddVoyageEmbeddingService(builder.Configuration);
 
 builder.Services.AddServices(builder.Configuration);
 

@@ -1,7 +1,8 @@
 ﻿namespace ContextMcp.Api.Config
 {
-    public class ElasticSearchSettings
+    public class ElasticSearchOptions
     {
+        public static readonly string Section = "Elasticsearch";
         public string KnowledgeBaseIndexName { get; set; } = string.Empty;
         public string KnowledgeBaseRelationIndexName { get; set; } = string.Empty;
         public string Url { get; set; } = string.Empty;

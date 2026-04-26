@@ -7,7 +7,7 @@ using Elastic.Transport;
 
 public static class ElasticsearchClientFactory
 {
-    public static ElasticsearchClient Create(ElasticSearchSettings options)
+    public static ElasticsearchClient Create(ElasticSearchOptions options)
     {
         var nodePool = new SingleNodePool(new Uri(options.Url));
 

@@ -10,11 +10,11 @@ namespace ContextMcp.Api.Services
     public class KnowledgeBaseService : IKnowledgeBaseService
     {
         private readonly ElasticsearchClient _elasticsearchClient;
-        private readonly ElasticSearchSettings _elasticSearchSettings;
+        private readonly ElasticSearchOptions _elasticSearchSettings;
 
         public KnowledgeBaseService(
             ElasticsearchClient elasticsearchClient,
-            IOptions<ElasticSearchSettings> elasticSearchSettingsOptions)
+            IOptions<ElasticSearchOptions> elasticSearchSettingsOptions)
         {
             _elasticsearchClient = elasticsearchClient;
             _elasticSearchSettings = elasticSearchSettingsOptions.Value;

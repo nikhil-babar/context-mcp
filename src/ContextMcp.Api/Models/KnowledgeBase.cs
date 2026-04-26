@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace ContextMcp.Api.Models
 {
@@ -22,6 +23,25 @@ namespace ContextMcp.Api.Models
 
         [Description("Structured content associated with the knowledge entry.")]
         public required KnowledgeBaseContent Content { get; set; }
+
+        [JsonInclude]
+        [JsonPropertyName("embedding")]
+        private float[]? Embedding { get; set; }
+
+        [JsonInclude]
+        [JsonPropertyName("embedding_model")]
+        private string? EmbeddingModel { get; set; }
+
+        [JsonInclude]
+        [JsonPropertyName("embedded_at")]
+        private DateTimeOffset? EmbeddedAt { get; set; }
+
+        public void SetEmbeddingData(float[] embedding, string embeddingModel, DateTimeOffset embeddedAt)
+        {
+            Embedding = embedding;
+            EmbeddingModel = embeddingModel;
+            EmbeddedAt = embeddedAt;
+        }
     }
 }
 
