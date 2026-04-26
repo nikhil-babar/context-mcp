@@ -19,6 +19,9 @@
         "id": {
           "type": "keyword"
         },
+        "user_id": {
+          "type": "keyword"
+        },
         "type": {
           "type": "keyword"
         },

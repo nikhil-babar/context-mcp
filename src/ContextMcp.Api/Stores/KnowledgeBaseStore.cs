@@ -5,14 +5,14 @@ using ContextMcp.Api.Models.ToolResponses;
 using Elastic.Clients.Elasticsearch;
 using Microsoft.Extensions.Options;
 
-namespace ContextMcp.Api.Services
+namespace ContextMcp.Api.Stores
 {
-    public class KnowledgeBaseService : IKnowledgeBaseService
+    public class KnowledgeBaseStore : IKnowledgeBaseStore
     {
         private readonly ElasticsearchClient _elasticsearchClient;
         private readonly ElasticSearchOptions _elasticSearchSettings;
 
-        public KnowledgeBaseService(
+        public KnowledgeBaseStore(
             ElasticsearchClient elasticsearchClient,
             IOptions<ElasticSearchOptions> elasticSearchSettingsOptions)
         {

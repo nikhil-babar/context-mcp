@@ -16,6 +16,11 @@ var jsonSerializerOptions = new JsonSerializerOptions(McpJsonUtilities.DefaultOp
 jsonSerializerOptions.Converters.Add(new KnowledgeBaseContentJsonConverter());
 
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.AddServerHeader = false;
+});
+
 // Register MCP with SSE transport
 builder.Services
     .AddMcpServer(options =>
@@ -38,8 +43,16 @@ builder.Services.AddVoyageEmbeddingService(builder.Configuration);
 
 builder.Services.AddServices(builder.Configuration);
 
+builder.Services
+    .AddAuthentication("ApiKey") // default method
+    .AddScheme<ApiKeyAuthOptions, APIKeyAuthHandler>("ApiKey", null); // how to validate
+
+builder.Services.AddAuthorization(); // enable access control
+
 var app = builder.Build();
 
+app.UseRouting();
+app.UseHttpsRedirection();
 app.UseCors();
 app.MapMcp("/mcp");   // ← mounts SSE at /mcp/sse, POST at /mcp/message
 

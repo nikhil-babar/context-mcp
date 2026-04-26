@@ -1,7 +1,7 @@
 using ContextMcp.Api.Config;
 using ContextMcp.Api.Interfaces;
-using ContextMcp.Api.Services;
 using ContextMcp.Api.Services.VoyageService;
+using ContextMcp.Api.Stores;
 using Microsoft.Extensions.Options;
 
 namespace ContextMcp.Api.Infrastructure
@@ -56,7 +56,9 @@ namespace ContextMcp.Api.Infrastructure
         public static IServiceCollection AddServices(
             this IServiceCollection services, IConfiguration config)
         {
-            services.AddScoped<IKnowledgeBaseService, KnowledgeBaseService>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IKnowledgeBaseStore, KnowledgeBaseStore>();
+            services.AddScoped<IUserStore, UserStore>();
 
             return services;
         }

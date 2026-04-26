@@ -1,0 +1,35 @@
+{
+  "index_patterns": ["users*"],
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 1
+    },
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        "userId": {
+          "type": "keyword"
+        },
+        "userName": {
+          "type": "keyword"
+        },
+        "userEmail": {
+          "type": "keyword"
+        },
+        "apiKeys": {
+          "type": "nested",
+          "properties": {
+            "intent": {
+              "type": "keyword"
+            },
+            "key": {
+              "type": "keyword"
+            }
+          }
+        }
+      }
+    }
+  },
+  "priority": 100
+}

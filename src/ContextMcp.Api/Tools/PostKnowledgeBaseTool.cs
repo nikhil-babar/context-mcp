@@ -2,23 +2,25 @@ using ContextMcp.Api.Interfaces;
 using ContextMcp.Api.Models.ToolRequests;
 using ContextMcp.Api.Models.ToolResponses;
 using ContextMcp.Api.Utility;
+using Microsoft.AspNetCore.Http;
 using ModelContextProtocol.Server;
-using System;
 using System.ComponentModel;
-using System.Linq;
+using System.Security.Claims;
 
 namespace ContextMcp.Api.Tools
 {
     [McpServerToolType]
     public class PostKnowledgeBaseTool
     {
-        private readonly IKnowledgeBaseService _knowledgeBaseService;
+        private readonly IKnowledgeBaseStore _knowledgeBaseService;
         private readonly IEmbeddingService _embeddingService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PostKnowledgeBaseTool(IKnowledgeBaseService knowledgeBaseService, IEmbeddingService embeddingService)
+        public PostKnowledgeBaseTool(IKnowledgeBaseStore knowledgeBaseService, IEmbeddingService embeddingService, IHttpContextAccessor httpContextAccessor)
         {
             _knowledgeBaseService = knowledgeBaseService;
             _embeddingService = embeddingService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [McpServerTool(Name = "post-knowledge")]
@@ -28,6 +30,13 @@ namespace ContextMcp.Api.Tools
             CancellationToken cnt
          ) 
         {
+            var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId)) 
+            {
+                throw new Exception("Unauthorized: User ID not found in context.");
+            }
+            request.KnowledgeBase.SetUserId(userId);
+
             var embeddingResult = await _embeddingService.GenerateBatchEmbeddingsAsync(new[] { request.KnowledgeSummary }, 1024, cnt);
             if (embeddingResult.IsSuccess && embeddingResult.Embeddings != null && embeddingResult.Embeddings.Count > 0)
             {

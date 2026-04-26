@@ -9,6 +9,10 @@ namespace ContextMcp.Api.Models
         [Description("Optional identifier of the knowledge entry.")]
         public string? Id { get; set; }
 
+        [JsonInclude]
+        [JsonPropertyName("user_id")]
+        private string? UserId { get; set; }
+
         [Description("Short human-readable title for the knowledge entry.")]
         public required string Title { get; set; }
 
@@ -41,6 +45,11 @@ namespace ContextMcp.Api.Models
             Embedding = embedding;
             EmbeddingModel = embeddingModel;
             EmbeddedAt = embeddedAt;
+        }
+
+        public void SetUserId(string userId)
+        {
+            UserId = userId;
         }
     }
 }

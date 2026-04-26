@@ -3,7 +3,7 @@ using ContextMcp.Api.Models.ToolResponses;
 
 namespace ContextMcp.Api.Interfaces
 {
-    public interface IKnowledgeBaseService
+    public interface IKnowledgeBaseStore
     {
             /// <summary>
             /// Stores a knowledge item in the knowledge base, creating a new entry or updating an existing one.
